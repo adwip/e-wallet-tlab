@@ -112,6 +112,7 @@ func (r *transactionUsecase) Transfer(c *echo.Context, req requests.TransferReq)
 		tx.Rollback()
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
+
 	transfer := entities.Transfers{
 		SenderId:       senderWallet.UserID,
 		WalletSourceId: senderWallet.SecureId,
