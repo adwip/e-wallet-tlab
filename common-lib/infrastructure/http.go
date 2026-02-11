@@ -46,5 +46,10 @@ func (r *httpServer) StartServer(port string) error {
 	for _, route := range r.server.Router().Routes() {
 		fmt.Printf("[%s] - %s - %s \n", route.Method, route.Path, route.Name)
 	}
+	r.server.RouteNotFound("/*", func(c *echo.Context) error {
+		return c.JSON(404, map[string]string{
+			"error": "not_found",
+		})
+	})
 	return r.server.Start(port)
 }
