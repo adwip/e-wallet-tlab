@@ -18,14 +18,20 @@ func (r *transactionUsecase) TopUp(c *echo.Context, req requests.TopUpReq) (out 
 
 	var amount = wallet.Balance + req.Amount
 	var operationId = utils.GenerateUUID()
+	var transactionID = utils.GenerateUUID()
 	var status = "FAILED"
 
 	tx := r.db.Begin()
 
 	defer func() {
 		r.transactionRepo.AddTransactionHistory(entities.TransactionHistories{
-			TransactionId: operationId,
+			TransactionId: transactionID,
+			WalletId:      wallet.SecureId,
+			Amount:        req.Amount,
+			SecureId:      utils.GenerateUUID(),
 			Status:        status,
+			Type:          "TOP_UP",
+			Description:   req.Note,
 		})
 
 		if status != "SUCCESS" {
@@ -46,10 +52,12 @@ func (r *transactionUsecase) TopUp(c *echo.Context, req requests.TopUpReq) (out 
 	}
 
 	transaction := entities.Transaction{
-		WalletID:   wallet.ID,
-		Amount:     req.Amount,
-		ActionType: "TOP_UP",
-		SecureId:   operationId,
+		WalletID:    wallet.SecureId,
+		SecureId:    transactionID,
+		Amount:      req.Amount,
+		ActionType:  "TOP_UP",
+		OperationId: operationId,
+		Note:        req.Note,
 	}
 
 	// act as Ledger

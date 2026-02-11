@@ -22,7 +22,7 @@ func (s *usersUsecase) Login(req requests.UserLoginReq) (out responses.UserLogin
 	}
 
 	if err = utils.VerifyPassword(req.Password, user.Password); err != nil {
-		return out, stacktrace.Cascade(err, stacktrace.INVALID_INPUT, err.Error())
+		return out, stacktrace.Cascade(err, stacktrace.UNAUTHENTICATED, err.Error())
 	}
 	jwtPayload := utils.PayloadSchema{
 		UserID: user.SecureId,

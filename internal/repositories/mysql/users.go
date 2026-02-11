@@ -1,6 +1,8 @@
 package mysql
 
 import (
+	"errors"
+
 	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 	"github.com/adwip/e-wallet-tlab/internal/models"
 	"github.com/adwip/e-wallet-tlab/internal/models/entities"
@@ -19,14 +21,20 @@ func SetupUsersRepository(db *gorm.DB) models.Users {
 }
 
 func (r *usersRepository) GetUserByEmail(email string) (out entities.Users, err error) {
-	if err = r.db.Where("email = ?", email).Scan(&out).Error; err != nil {
+	if err = r.db.Where("email = ?", email).First(&out).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return out, nil
+		}
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 	return out, nil
 }
 
 func (r *usersRepository) GetUserBySecureId(secureId string) (out entities.Users, err error) {
-	if err = r.db.Where("secure_id = ?", secureId).Scan(&out).Error; err != nil {
+	if err = r.db.Where("secure_id = ?", secureId).First(&out).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return out, nil
+		}
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 	return out, nil

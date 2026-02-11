@@ -13,7 +13,8 @@ type usersUsecase struct {
 
 func SetupUsersUsecase(userRepo models.Users, db *gorm.DB, walletRepo models.Wallets) UsersUsecase {
 	return &usersUsecase{
-		userRepo: userRepo,
-		db:       db,
+		userRepo:   userRepo,
+		db:         db,
+		walletRepo: walletRepo,
 	}
 }

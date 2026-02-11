@@ -3,7 +3,7 @@ package dtos
 import "time"
 
 type TransactionHistoryDto struct {
-	TransactionId   string    `gorm:"transaction_id"`
+	OperationId     string    `gorm:"operation_id"`
 	Amount          float64   `gorm:"amount"`
 	Status          string    `gorm:"status"`
 	TransactionDate time.Time `gorm:"transaction_date"`

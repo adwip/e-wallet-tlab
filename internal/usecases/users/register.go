@@ -32,9 +32,10 @@ func (s *usersUsecase) Register(req requests.UserRegistrationReq) (out responses
 	}
 
 	wallet := entities.Wallet{
-		SecureId: utils.GenerateUUID(),
-		UserID:   user.SecureId,
-		Balance:  0,
+		SecureId:      utils.GenerateUUID(),
+		UserID:        user.SecureId,
+		Balance:       0,
+		AccountNumber: utils.GenerateAccountNumber(),
 	}
 
 	tx := s.db.Begin()
@@ -42,18 +43,21 @@ func (s *usersUsecase) Register(req requests.UserRegistrationReq) (out responses
 		return out, stacktrace.Cascade(tx.Error, stacktrace.INTERNAL_SERVER_ERROR, tx.Error.Error())
 	}
 
-	if err = s.userRepo.CreateNewUser(tx, user); err != nil {
+	err = s.userRepo.CreateNewUser(tx, user)
+	if err != nil {
 		tx.Rollback()
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 
-	if err = s.walletRepo.CreateNewWallet(tx, wallet); err != nil {
+	err = s.walletRepo.CreateNewWallet(tx, wallet)
+	if err != nil {
 		tx.Rollback()
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 
 	err = tx.Commit().Error
 	if err != nil {
+		tx.Rollback()
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 

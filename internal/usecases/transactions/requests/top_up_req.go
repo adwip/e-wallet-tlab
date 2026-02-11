@@ -5,10 +5,12 @@ import (
 
 	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 	"github.com/labstack/echo/v5"
+	"github.com/microcosm-cc/bluemonday"
 )
 
 type TopUpReq struct {
 	Amount float64 `json:"amount" validate:"required,numeric,min=1"`
+	Note   string  `json:"note"`
 }
 
 func NewTopUpReq(c *echo.Context) (out TopUpReq, err error) {
@@ -24,6 +26,9 @@ func NewTopUpReq(c *echo.Context) (out TopUpReq, err error) {
 		err = errors.New("amount must be greater than 0")
 		return out, stacktrace.Cascade(err, stacktrace.INVALID_INPUT, err.Error())
 	}
+
+	p := bluemonday.StrictPolicy()
+	out.Note = p.Sanitize(out.Note)
 
 	return out, nil
 }

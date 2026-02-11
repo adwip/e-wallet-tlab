@@ -6,8 +6,8 @@ import (
 )
 
 type TransactionHistoryReq struct {
-	Limit  int `form:"limit" validate:"required,numeric,min=10"`
-	Offset int `form:"offset" validate:"required,numeric,min=0"`
+	Limit  int `query:"limit" validate:"required,numeric,min=10"`
+	Offset int `query:"offset"`
 }
 
 func NewTransactionHistoryReq(c *echo.Context) (out TransactionHistoryReq, err error) {
@@ -16,7 +16,7 @@ func NewTransactionHistoryReq(c *echo.Context) (out TransactionHistoryReq, err e
 	}
 
 	if err = c.Validate(&out); err != nil {
-		return out, stacktrace.Cascade(err, stacktrace.INVALID_INPUT, err.Error())
+		return out, stacktrace.CascadeWithClientMessage(err, stacktrace.INVALID_INPUT, err.Error())
 	}
 
 	return out, nil

@@ -5,7 +5,6 @@ import "time"
 type Transfers struct {
 	ID             uint      `gorm:"column:id;primaryKey;autoIncrement;index"`
 	SecureId       string    `gorm:"column:secure_id;not null;uniqueIndex;type:varchar(255)"`
-	WalletID       uint      `gorm:"column:wallet_id;not null;type:varchar(255)"`
 	Amount         float64   `gorm:"column:amount;not null;type:decimal(10,2)"`
 	SenderId       string    `gorm:"column:sender_id;not null;type:varchar(255)"`
 	WalletSourceId string    `gorm:"column:wallet_source_id;not null;type:varchar(255)"`

@@ -1,7 +1,7 @@
 {
     "service": {
         "name": "T-Lab Wallet",
-        "port": ":8080",
+        "port": ":8082",
         "log_file": "log/tlab-wallet.log"
     },
     "db": {

@@ -20,10 +20,16 @@ func (s *usersUsecase) GetProfile(ctx *echo.Context) (out responses.UserProfileR
 		return out, stacktrace.Cascade(err, stacktrace.INVALID_INPUT, err.Error())
 	}
 
+	wallet, err := s.walletRepo.GetWalletByUserId(utils.GetUserId(ctx))
+	if err != nil {
+		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
+	}
+
 	out = responses.UserProfileResp{
-		UserID: user.SecureId,
-		Name:   user.Name,
-		Email:  user.Email,
+		UserID:        user.SecureId,
+		Name:          user.Name,
+		Email:         user.Email,
+		AccountNumber: wallet.AccountNumber,
 	}
 	return out, nil
 }

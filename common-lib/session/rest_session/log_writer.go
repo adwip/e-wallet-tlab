@@ -10,7 +10,7 @@ import (
 	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 )
 
-func (s *restSession) writeRestLog(err error, method, reqId, path string, queryPayload any) (stCode string, stMsg string, errProcess error) {
+func (s *restSession) writeRestLog(err error, method, reqId, path string) (stCode string, stMsg string, errProcess error) {
 	var (
 		logMsg, errReason   string
 		errStack            []string
@@ -38,7 +38,6 @@ func (s *restSession) writeRestLog(err error, method, reqId, path string, queryP
 		EventTime:  time.Now().UTC().Format(constant.YYMMDDHiS),
 		StatusCode: httpCode,
 		Path:       path,
-		Payload:    queryPayload,
 	}
 
 	if err != nil {

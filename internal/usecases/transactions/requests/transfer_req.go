@@ -10,7 +10,6 @@ import (
 type TransferReq struct {
 	Amount float64 `json:"amount" validate:"required,numeric"`
 	To     string  `json:"to" validate:"required"`
-	Pin    string  `json:"pin" validate:"required"`
 	Note   string  `json:"note"`
 }
 

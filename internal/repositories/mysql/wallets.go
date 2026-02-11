@@ -1,6 +1,9 @@
 package mysql
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 	"github.com/adwip/e-wallet-tlab/internal/models"
 	"github.com/adwip/e-wallet-tlab/internal/models/entities"
@@ -21,6 +24,7 @@ func SetupWalletRepository(db *gorm.DB) models.Wallets {
 
 func (r *walletRepository) CreateNewWallet(tx *gorm.DB, wallet entities.Wallet) (err error) {
 	if err = tx.Create(&wallet).Error; err != nil {
+		fmt.Println("Error creating wallet ", err)
 		return stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 	return nil
@@ -55,4 +59,14 @@ func (r *walletRepository) AddNewTransfer(tx *gorm.DB, transfer entities.Transfe
 		return stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
 	return nil
+}
+
+func (r *walletRepository) GetWalletByAccountNumber(accountNumber string) (out entities.Wallet, err error) {
+	if err = r.db.Where("account_number = ?", accountNumber).First(&out).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return out, nil
+		}
+		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
+	}
+	return out, nil
 }

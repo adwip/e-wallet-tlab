@@ -25,7 +25,7 @@ func (r *transactionUsecase) History(c *echo.Context, req requests.TransactionHi
 
 	for _, transaction := range transactions {
 		out.Transactions = append(out.Transactions, responses.TransactionHistoryResp{
-			TransactionId:   transaction.TransactionId,
+			OperationId:     transaction.OperationId,
 			Amount:          transaction.Amount,
 			Status:          transaction.Status,
 			TransactionDate: transaction.TransactionDate.Format("2006-01-02 15:04:05"),

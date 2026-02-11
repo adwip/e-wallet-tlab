@@ -10,4 +10,5 @@ type Wallets interface {
 	UpdateBalance(db *gorm.DB, walletId string, amount float64) (err error)
 	GetWalletByUserId(userId string) (out entities.Wallet, err error)
 	AddNewTransfer(tx *gorm.DB, transfer entities.Transfers) (err error)
+	GetWalletByAccountNumber(accountNumber string) (out entities.Wallet, err error)
 }

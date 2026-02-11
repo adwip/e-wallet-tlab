@@ -48,15 +48,14 @@ func (r *transactionRepository) AddTransactionHistory(transaction entities.Trans
 }
 
 func (r *transactionRepository) GetTransactionsByWalletId(walletId string, limit int, offset int) (out []dtos.TransactionHistoryDto, err error) {
-	err = r.db.Table("transaction_histories th").
-		Select("th.transaction_id as transaction_id, th.amount, th.status, th.created_at as transaction_date, th.type, th.description").
-		Joins("LEFT JOIN transactions t ON t.id = th.transaction_id").
-		Where("t.secure_id = ?", walletId).
+	err = r.db.Table("transactions_histories th").
+		Select("t.operation_id as operation_id, th.amount, th.status, th.created_at as transaction_date, th.type, th.description").
+		Joins("LEFT JOIN transactions t ON t.secure_id = th.transaction_id").
+		Where("th.wallet_id = ?", walletId).
 		Limit(limit).
 		Offset(offset).
 		Order("th.created_at desc").
 		Find(&out).Error
-
 	if err != nil {
 		return out, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error())
 	}
