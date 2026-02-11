@@ -8,6 +8,7 @@ import (
 func SetupRoutes(authHandlers *rest.AuthHandler, usersHandlers *rest.UsersHandler, walletHandlers *rest.WalletHandler, transactionHandlers *rest.TransactionsHandler, server infrastructure.HttpServer) {
 	apiRoutes := SetupApiRoutes(authHandlers, usersHandlers, walletHandlers, transactionHandlers)
 	api := server.RouteInit("/api")
-	apiRoutes.UnProtectedRoutes(api)
-	apiRoutes.ProtectedRoutes(api)
+	v1 := api.Group("/v1")
+	apiRoutes.UnProtectedRoutes(v1)
+	apiRoutes.ProtectedRoutes(v1)
 }

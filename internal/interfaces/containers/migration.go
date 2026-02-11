@@ -18,7 +18,7 @@ func Migrations() (err error) {
 	}
 
 	// Auto migrate
-	err = db.AutoMigrate(&entities.Users{}, &entities.Wallet{}, &entities.Transaction{})
+	err = db.AutoMigrate(&entities.Users{}, &entities.Wallet{}, &entities.Transaction{}, &entities.Transfers{}, &entities.TransactionHistories{})
 	if err != nil {
 		return err
 	}

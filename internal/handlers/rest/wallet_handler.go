@@ -2,6 +2,7 @@ package rest
 
 import (
 	"github.com/adwip/e-wallet-tlab/common-lib/session"
+	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 	"github.com/adwip/e-wallet-tlab/internal/usecases/wallets"
 	"github.com/labstack/echo/v5"
 )
@@ -16,14 +17,10 @@ func SetupWalletHandler(walletsUsecase wallets.WalletsUsecase) *WalletHandler {
 	}
 }
 
-func (r *WalletHandler) TestRequest(c *echo.Context) error {
-	return session.SetResult(c, map[string]interface{}{
-		"message": "success",
-	}, nil)
-}
-
-func (r *WalletHandler) TopUp(c *echo.Context) error {
-	return session.SetResult(c, map[string]interface{}{
-		"message": "success",
-	}, nil)
+func (r *WalletHandler) GetBalance(c *echo.Context) error {
+	out, err := r.walletsUsecase.GetBalance(c)
+	if err != nil {
+		return session.SetResult(c, nil, stacktrace.Cascade(err, stacktrace.INTERNAL_SERVER_ERROR, err.Error()))
+	}
+	return session.SetResult(c, out, nil)
 }

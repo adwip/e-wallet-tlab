@@ -38,9 +38,9 @@ func SetupServiceContainer() (err error) {
 	walletRepo := mysql.SetupWalletRepository(db)
 
 	// setup usecase
-	usersUsecase := users.SetupUsersUsecase(usersRepo)
-	transactionUsecase := transactions.SetupTransactionUsecase(transactionRepo, walletRepo)
-	walletUsecase := wallets.SetupWalletsUsecase(walletRepo)
+	usersUsecase := users.SetupUsersUsecase(usersRepo, db, walletRepo)
+	transactionUsecase := transactions.SetupTransactionUsecase(transactionRepo, walletRepo, db)
+	walletUsecase := wallets.SetupWalletsUsecase(walletRepo, transactionRepo, db)
 
 	// setup handler
 	authHandler := rest.SetupAuthHandler(usersUsecase)

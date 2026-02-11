@@ -1,1 +1,7 @@
 /vendor
+/internal/shared/config/*.json
+/log
+*.exe
+*.exe~
+.env
+.env.example

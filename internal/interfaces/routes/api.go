@@ -23,15 +23,15 @@ func SetupApiRoutes(authHandlers *rest.AuthHandler, usersHandlers *rest.UsersHan
 }
 
 func (a *apiRoutes) UnProtectedRoutes(g *echo.Group) {
-	g.POST("/auth/register", a.authHandlers.TestRequest)
-	g.POST("/auth/login", a.authHandlers.TestRequest)
+	g.POST("/auth/register", a.usersHandlers.Register)
+	g.POST("/auth/login", a.authHandlers.Login)
 }
 
 func (a *apiRoutes) ProtectedRoutes(g *echo.Group) {
 	g.Use(middlewares.LoginValidation)
-	g.GET("/users/profile", a.usersHandlers.TestRequest)
-	g.POST("/wallets/topup", a.walletHandlers.TopUp)
-	g.GET("/wallets/balance", a.walletHandlers.TestRequest)
-	g.POST("/transactions/transfer", a.transactionHandlers.TestRequest)
-	g.GET("/transactions/history", a.transactionHandlers.TestRequest)
+	g.GET("/users/profile", a.usersHandlers.GetProfile)
+	g.POST("/wallets/topup", a.transactionHandlers.TopUp)
+	g.GET("/wallets/balance", a.walletHandlers.GetBalance)
+	g.POST("/transactions/transfer", a.transactionHandlers.Transfer)
+	g.GET("/transactions/history", a.transactionHandlers.History)
 }
