@@ -9,9 +9,8 @@ import (
 )
 
 type ConfigApp struct {
-	Service  ServiceConfig  `mapstructure:"service" yaml:"service"`
-	Db       DbConfig       `mapstructure:"db" yaml:"db"`
-	Security SecurityConfig `mapstructure:"security" yaml:"security"`
+	Service ServiceConfig `mapstructure:"service" yaml:"service"`
+	Db      DbConfig      `mapstructure:"db" yaml:"db"`
 }
 
 type ServiceConfig struct {
@@ -22,10 +21,6 @@ type ServiceConfig struct {
 
 type DbConfig struct {
 	Host string `mapstructure:"host" yaml:"host"`
-}
-
-type SecurityConfig struct {
-	PasswordHashKey string `mapstructure:"password_hash_key" yaml:"password_hash_key"`
 }
 
 func SetupConfig() (out ConfigApp, err error) {

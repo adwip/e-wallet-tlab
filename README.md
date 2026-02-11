@@ -43,9 +43,6 @@ Create `internal/shared/config/config.json`:
     },
     "db": {
         "host": "root:password@tcp(localhost:3306)/tlab_wallet_db?parseTime=true"
-    },
-    "security": {
-        "password_hash_key": "your-secret-key-here"
     }
 }
 ```
@@ -58,7 +55,6 @@ SERVICE_NAME=T-Lab Wallet
 SERVICE_PORT=:8082
 SERVICE_LOG_FILE=log/tlab-wallet.log
 DB_HOST=root:password@tcp(localhost:3306)/tlab_wallet_db?parseTime=true
-SECURITY_PASSWORD_HASH_KEY=your-secret-key-here
 ```
 
 ### 5. Run Database Migration
