@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/logger"
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/shared/constant"
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/stacktrace"
+	"github.com/adwip/e-wallet-tlab/common-lib/logger"
+	"github.com/adwip/e-wallet-tlab/common-lib/shared/constant"
+	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 )
 
 func (s *restSession) writeRestLog(err error, method, reqId, path string, queryPayload any) (stCode string, stMsg string, errProcess error) {

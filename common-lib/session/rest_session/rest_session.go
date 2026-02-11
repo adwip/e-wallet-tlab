@@ -7,8 +7,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/logger"
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/metadata"
+	"github.com/adwip/e-wallet-tlab/common-lib/logger"
+	"github.com/adwip/e-wallet-tlab/common-lib/metadata"
 	"github.com/labstack/echo/v5"
 )
 

@@ -1,0 +1,13 @@
+{
+    "service": {
+        "name": "T-Lab Wallet",
+        "port": ":8080",
+        "log_file": "log/tlab-wallet.log"
+    },
+    "db": {
+        "host": "root:12345678@tcp(localhost:3306)/tlab_wallet_db?parseTime=true"
+    },
+    "security": {
+        "password_hash_key": "[ENCRYPTION_KEY]"
+    }
+}

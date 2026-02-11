@@ -3,7 +3,7 @@ package stacktrace
 import (
 	"net/http"
 
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/shared/constant"
+	"github.com/adwip/e-wallet-tlab/common-lib/shared/constant"
 )
 
 const (

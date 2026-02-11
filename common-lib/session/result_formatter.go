@@ -3,7 +3,7 @@ package session
 import (
 	"net/http"
 
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/stacktrace"
+	"github.com/adwip/e-wallet-tlab/common-lib/stacktrace"
 	"github.com/labstack/echo/v5"
 )
 

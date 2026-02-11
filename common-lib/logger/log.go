@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/logger/report"
+	"github.com/adwip/e-wallet-tlab/common-lib/logger/report"
 )
 
 type Logger interface {

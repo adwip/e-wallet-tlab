@@ -5,13 +5,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type usersRepository struct {
+type transactionRepository struct {
 	// put db variables	instances here
 	db *gorm.DB
 }
 
-func SetupUsersRepository(db *gorm.DB) models.Users {
-	return &usersRepository{
+func SetupTransactionRepository(db *gorm.DB) models.Transactions {
+	return &transactionRepository{
 		db: db,
 	}
 }

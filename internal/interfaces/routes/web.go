@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/adwip/aj-teknik-backend-admin/internal/handlers/web"
+	"github.com/adwip/e-wallet-tlab/internal/handlers/web"
 	"github.com/labstack/echo/v5"
 )
 

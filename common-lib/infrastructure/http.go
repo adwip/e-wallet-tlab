@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"fmt"
 
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/logger"
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/session/rest_session"
+	"github.com/adwip/e-wallet-tlab/common-lib/logger"
+	"github.com/adwip/e-wallet-tlab/common-lib/session/rest_session"
 	"github.com/labstack/echo/v5"
 )
 

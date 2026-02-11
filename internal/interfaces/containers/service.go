@@ -1,48 +1,56 @@
 package containers
 
 import (
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/infrastructure"
-	"github.com/adwip/aj-teknik-backend-admin/common-lib/logger"
-	"github.com/adwip/aj-teknik-backend-admin/internal/handlers/rest"
-	"github.com/adwip/aj-teknik-backend-admin/internal/handlers/web"
-	"github.com/adwip/aj-teknik-backend-admin/internal/interfaces/drivers"
-	"github.com/adwip/aj-teknik-backend-admin/internal/interfaces/routes"
-	"github.com/adwip/aj-teknik-backend-admin/internal/repositories/mysql"
-	"github.com/adwip/aj-teknik-backend-admin/internal/shared/config"
-	"github.com/adwip/aj-teknik-backend-admin/internal/usecases/admin"
+	"github.com/adwip/e-wallet-tlab/common-lib/infrastructure"
+	"github.com/adwip/e-wallet-tlab/common-lib/logger"
+	"github.com/adwip/e-wallet-tlab/internal/handlers/rest"
+	"github.com/adwip/e-wallet-tlab/internal/interfaces/drivers"
+	"github.com/adwip/e-wallet-tlab/internal/interfaces/routes"
+	"github.com/adwip/e-wallet-tlab/internal/repositories/mysql"
+	"github.com/adwip/e-wallet-tlab/internal/shared/config"
+	"github.com/adwip/e-wallet-tlab/internal/usecases/transactions"
+	"github.com/adwip/e-wallet-tlab/internal/usecases/users"
+	"github.com/adwip/e-wallet-tlab/internal/usecases/wallets"
 )
 
 func SetupServiceContainer() (err error) {
-	log, _, err := logger.SetupLogger("")
+
+	cfg, err := config.SetupConfig()
+	if err != nil {
+		return nil
+	}
+
+	log, _, err := logger.SetupLogger(cfg.Service.LogFile)
 	if err != nil {
 		return nil
 	}
 
 	httpServer := infrastructure.SetupHttpServer(log)
 
-	_, err = config.SetupConfig()
-	if err != nil {
-		return nil
-	}
-
-	err = drivers.SetupDatabase("config.DatabaseUrl")
+	db, err := drivers.SetupDatabase(cfg.Db.Host)
 	if err != nil {
 		return nil
 	}
 
 	// setup repo
-	_ = mysql.SetupUsersRepository()
+	usersRepo := mysql.SetupUsersRepository(db)
+	transactionRepo := mysql.SetupTransactionRepository(db)
+	walletRepo := mysql.SetupWalletRepository(db)
 
 	// setup usecase
-	_ = admin.SetupAdminUsecase()
+	usersUsecase := users.SetupUsersUsecase(usersRepo)
+	transactionUsecase := transactions.SetupTransactionUsecase(transactionRepo, walletRepo)
+	walletUsecase := wallets.SetupWalletsUsecase(walletRepo)
 
 	// setup handler
-	rest := rest.SetupRestHandlers()
-	web := web.SetupWebHandlers()
+	authHandler := rest.SetupAuthHandler(usersUsecase)
+	usersHandlers := rest.SetupUsersHandler(usersUsecase)
+	walletHandlers := rest.SetupWalletHandler(walletUsecase)
+	transactionHandlers := rest.SetupTransactionsHandler(transactionUsecase, walletUsecase)
 
-	routes.SetupRoutes(rest, web, httpServer)
+	routes.SetupRoutes(authHandler, usersHandlers, walletHandlers, transactionHandlers, httpServer)
 
-	err = httpServer.StartServer(":8080")
+	err = httpServer.StartServer(cfg.Service.Port)
 	if err != nil {
 		return err
 	}
